@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<h1>Admin Panel</h1>
+
+<nav>
+    <ul>
+        <li>
+            <a asp-controller="Questions" asp-action="Index">Sorular ve Cevaplar</a>
+            <ul>
+                <li><a asp-controller="Questions" asp-action="Create">Yeni Soru Ekle</a></li>
+                <li><a asp-controller="Questions" asp-action="Index">Soruları Yönet</a></li>
+            </ul>
+        </li>
+        <li>
+            <a asp-controller="Regulations" asp-action="Index">Kanun ve Yönetmelikler</a>
+            <ul>
+                <li><a asp-controller="Regulations" asp-action="Create">Yeni Kanun/Yönetmelik Ekle</a></li>
+                <li><a asp-controller="Regulations" asp-action="Index">Kanunları/Yönetmelikleri Yönet</a></li>
+            </ul>
+        </li>
+        <li>
+            <a asp-controller="PetitionSamples" asp-action="Index">Dilekçe Örnekleri</a>
+            <ul>
+                <li><a asp-controller="PetitionSamples" asp-action="Create">Yeni Dilekçe Örneği Ekle</a></li>
+                <li><a asp-controller="PetitionSamples" asp-action="Index">Dilekçe Örneklerini Yönet</a></li>
+            </ul>
+        </li>
+        <li>
+            <a asp-controller="Guesthouses" asp-action="Index">Kamu Misafirhaneleri</a>
+            <ul>
+                <li><a asp-controller="Guesthouses" asp-action="Create">Yeni Misafirhane Ekle</a></li>
+                <li><a asp-controller="Guesthouses" asp-action="Index">Misafirhaneleri Yönet</a></li>
+            </ul>
+        </li>
+        <li>
+            <a asp-controller="SalaryCharts" asp-action="Index">Maaş, Tediye, İkramiye Tabloları</a>
+            <ul>
+                <li><a asp-controller="SalaryCharts" asp-action="Create">Yeni Tablo Ekle</a></li>
+                <li><a asp-controller="SalaryCharts" asp-action="Index">Tabloları Yönet</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
