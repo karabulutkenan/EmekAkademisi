@@ -11,6 +11,7 @@ namespace EmekAkademisi.Data
         {
         }
         public DbSet<Question>? Questions { get; set; }
+        public DbSet<Regulation>? Regulations { get; set; }
 
 
 
