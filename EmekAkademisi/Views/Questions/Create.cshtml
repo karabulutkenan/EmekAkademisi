@@ -1,0 +1,73 @@
+﻿@model EmekAkademisi.Models.Question
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Question</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShortAnswer" class="control-label"></label>
+                <input asp-for="ShortAnswer" class="form-control" />
+                <span asp-validation-for="ShortAnswer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DetailAnswer" class="control-label"></label>
+                <input asp-for="DetailAnswer" class="form-control" />
+                <span asp-validation-for="DetailAnswer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SourcePerson" class="control-label"></label>
+                <input asp-for="SourcePerson" class="form-control" />
+                <span asp-validation-for="SourcePerson" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AnsweredBy" class="control-label"></label>
+                <input asp-for="AnsweredBy" class="form-control" />
+                <span asp-validation-for="AnsweredBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="References" class="control-label"></label>
+                <input asp-for="References" class="form-control" />
+                <span asp-validation-for="References" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreationDate" class="control-label"></label>
+                <input asp-for="CreationDate" class="form-control" />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModifiedDate" class="control-label"></label>
+                <input asp-for="ModifiedDate" class="form-control" />
+                <span asp-validation-for="ModifiedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

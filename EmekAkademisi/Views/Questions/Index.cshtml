@@ -1,0 +1,91 @@
+﻿@model IEnumerable<EmekAkademisi.Models.Question>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<form asp-controller="Questions" asp-action="Index" method="get">
+    <div class="form-group">
+        <input type="text" name="searchString" class="form-control" placeholder="Başlık ile arama yap...">
+        <button type="submit" class="btn btn-primary">Ara</button>
+    </div>
+</form>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShortAnswer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DetailAnswer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SourcePerson)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnsweredBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.References)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShortAnswer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DetailAnswer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SourcePerson)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnsweredBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.References)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedDate)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
