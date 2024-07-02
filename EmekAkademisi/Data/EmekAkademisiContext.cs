@@ -14,6 +14,7 @@ namespace EmekAkademisi.Data
         public DbSet<Regulation>? Regulations { get; set; }
         public DbSet<PetitionSample>? PetitionSamples { get; set; }
         public DbSet<Guesthouse>? Guesthouses { get; set; }
+        public DbSet<SalaryChart>? SalaryCharts { get; set; }
 
 
 
