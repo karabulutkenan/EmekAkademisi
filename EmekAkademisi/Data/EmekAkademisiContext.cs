@@ -13,6 +13,7 @@ namespace EmekAkademisi.Data
         public DbSet<Question>? Questions { get; set; }
         public DbSet<Regulation>? Regulations { get; set; }
         public DbSet<PetitionSample>? PetitionSamples { get; set; }
+        public DbSet<Guesthouse>? Guesthouses { get; set; }
 
 
 
