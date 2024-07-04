@@ -16,6 +16,7 @@ namespace EmekAkademisi.Models
         public string Address { get; set; } = "";
 
         [Required]
+        [RegularExpression(@"^(\+90|0)?5\d{9}$", ErrorMessage = "Lütfen Türkiyeye Ait Bir Telefon Girin.")]
         [StringLength(20)]
         public string Phone { get; set; } = "";
     }

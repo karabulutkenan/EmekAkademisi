@@ -64,14 +64,19 @@ namespace EmekAkademisi.Controllers
         // POST: PetitionSamples/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,FileType,UploadDate")] PetitionSample petitionSample, IFormFile file)
+        public async Task<IActionResult> Create([Bind("Id,Title")] PetitionSample petitionSample, IFormFile file)
         {
             if (ModelState.IsValid)
             {
                 if (file != null && file.Length > 0)
                 {
                     var fileName = Path.GetFileName(file.FileName);
-                    var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", fileName);
+                    var uploadsFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                    if (!Directory.Exists(uploadsFolderPath))
+                    {
+                        Directory.CreateDirectory(uploadsFolderPath);
+                    }
+                    var filePath = Path.Combine(uploadsFolderPath, fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -79,8 +84,9 @@ namespace EmekAkademisi.Controllers
                     }
 
                     petitionSample.FilePath = "/uploads/" + fileName;
-                    petitionSample.FileType = Path.GetExtension(fileName).ToLower();
                 }
+
+                petitionSample.UploadDate = DateTime.Now;
 
                 _context.Add(petitionSample);
                 await _context.SaveChangesAsync();
@@ -108,7 +114,7 @@ namespace EmekAkademisi.Controllers
         // POST: PetitionSamples/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,FilePath,FileType,UploadDate")] PetitionSample petitionSample, IFormFile file)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,FilePath")] PetitionSample petitionSample, IFormFile file)
         {
             if (id != petitionSample.Id)
             {
@@ -120,7 +126,12 @@ namespace EmekAkademisi.Controllers
                 if (file != null && file.Length > 0)
                 {
                     var fileName = Path.GetFileName(file.FileName);
-                    var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", fileName);
+                    var uploadsFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                    if (!Directory.Exists(uploadsFolderPath))
+                    {
+                        Directory.CreateDirectory(uploadsFolderPath);
+                    }
+                    var filePath = Path.Combine(uploadsFolderPath, fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -128,7 +139,11 @@ namespace EmekAkademisi.Controllers
                     }
 
                     petitionSample.FilePath = "/uploads/" + fileName;
-                    petitionSample.FileType = Path.GetExtension(fileName).ToLower();
+                }
+                else
+                {
+                    // Dosya yüklenmediğinde mevcut dosya yolunu koruyun
+                    _context.Entry(petitionSample).Property(x => x.FilePath).IsModified = false;
                 }
 
                 try

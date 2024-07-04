@@ -11,20 +11,26 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UploadDate" class="control-label"></label>
-                <input asp-for="UploadDate" class="form-control" />
-                <span asp-validation-for="UploadDate" class="text-danger"></span>
+                <label>Current File</label>
+                <div>
+                    <a href="@Model.FilePath" target="_blank">@System.IO.Path.GetFileName(Model.FilePath)</a>
+                </div>
             </div>
             <div class="form-group">
-                <label for="file" class="control-label">File</label>
+                <button type="button" id="changeFileButton" class="btn btn-secondary">Change File</button>
+            </div>
+            <div class="form-group" id="fileInputGroup" style="display:none;">
+                <label for="file" class="control-label">New File</label>
                 <input type="file" name="file" class="form-control" />
             </div>
+            <input type="hidden" asp-for="FilePath" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -37,6 +43,12 @@
 </div>
 
 @section Scripts {
+    <script>
+        document.getElementById("changeFileButton").onclick = function () {
+            document.getElementById("fileInputGroup").style.display = "block";
+            this.style.display = "none";
+        };
+    </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EmekAkademisi.Data;
 using EmekAkademisi.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace EmekAkademisi.Controllers
 {
@@ -24,12 +23,17 @@ namespace EmekAkademisi.Controllers
         }
 
         // GET: SalaryCharts
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string? searchString)
         {
-            var salaryCharts = from s in _context.SalaryCharts
-                               select s;
+            if (_context.SalaryCharts == null)
+            {
+                return Problem("Entity set 'EmekAkademisiContext.SalaryCharts' is null.");
+            }
 
-            if (!String.IsNullOrEmpty(searchString))
+            var salaryCharts = from sc in _context.SalaryCharts
+                               select sc;
+
+            if (!string.IsNullOrEmpty(searchString))
             {
                 salaryCharts = salaryCharts.Where(s => s.Title.Contains(searchString));
             }
@@ -47,6 +51,7 @@ namespace EmekAkademisi.Controllers
 
             var salaryChart = await _context.SalaryCharts
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (salaryChart == null)
             {
                 return NotFound();
@@ -64,14 +69,19 @@ namespace EmekAkademisi.Controllers
         // POST: SalaryCharts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,UploadDate")] SalaryChart salaryChart, IFormFile file)
+        public async Task<IActionResult> Create([Bind("Id,Title")] SalaryChart salaryChart, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
                 if (file != null && file.Length > 0)
                 {
                     var fileName = Path.GetFileName(file.FileName);
-                    var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", fileName);
+                    var uploadsFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                    if (!Directory.Exists(uploadsFolderPath))
+                    {
+                        Directory.CreateDirectory(uploadsFolderPath);
+                    }
+                    var filePath = Path.Combine(uploadsFolderPath, fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -80,6 +90,8 @@ namespace EmekAkademisi.Controllers
 
                     salaryChart.ImagePath = "/uploads/" + fileName;
                 }
+
+                salaryChart.UploadDate = DateTime.Now;
 
                 _context.Add(salaryChart);
                 await _context.SaveChangesAsync();
@@ -107,7 +119,7 @@ namespace EmekAkademisi.Controllers
         // POST: SalaryCharts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ImagePath,UploadDate")] SalaryChart salaryChart, IFormFile file)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ImagePath")] SalaryChart salaryChart, IFormFile? file)
         {
             if (id != salaryChart.Id)
             {
@@ -119,7 +131,12 @@ namespace EmekAkademisi.Controllers
                 if (file != null && file.Length > 0)
                 {
                     var fileName = Path.GetFileName(file.FileName);
-                    var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", fileName);
+                    var uploadsFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                    if (!Directory.Exists(uploadsFolderPath))
+                    {
+                        Directory.CreateDirectory(uploadsFolderPath);
+                    }
+                    var filePath = Path.Combine(uploadsFolderPath, fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -128,6 +145,12 @@ namespace EmekAkademisi.Controllers
 
                     salaryChart.ImagePath = "/uploads/" + fileName;
                 }
+                else
+                {
+                    _context.Entry(salaryChart).Property(x => x.ImagePath).IsModified = false;
+                }
+
+                salaryChart.UploadDate = DateTime.Now;
 
                 try
                 {
@@ -175,15 +198,16 @@ namespace EmekAkademisi.Controllers
         {
             if (_context.SalaryCharts == null)
             {
-                return Problem("Entity set 'EmekAkademisiContext.SalaryCharts'  is null.");
+                return Problem("Entity set 'EmekAkademisiContext.SalaryCharts' is null.");
             }
+
             var salaryChart = await _context.SalaryCharts.FindAsync(id);
             if (salaryChart != null)
             {
                 _context.SalaryCharts.Remove(salaryChart);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

@@ -60,10 +60,14 @@ namespace EmekAkademisi.Controllers
         // POST: Questions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ShortAnswer,DetailAnswer,SourcePerson,AnsweredBy,References,Status,CreationDate,ModifiedDate")] Question question)
+        public async Task<IActionResult> Create([Bind("Id,Title,ShortAnswer,DetailAnswer,SourcePerson,AnsweredBy,References")] Question question)
         {
             if (ModelState.IsValid)
             {
+                question.Status = "Cevap Bekliyor"; // Varsayılan durum
+                question.CreationDate = DateTime.Now;
+                question.ModifiedDate = DateTime.Now;
+
                 _context.Add(question);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -90,7 +94,7 @@ namespace EmekAkademisi.Controllers
         // POST: Questions/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ShortAnswer,DetailAnswer,SourcePerson,AnsweredBy,References,Status,CreationDate,ModifiedDate")] Question question)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ShortAnswer,DetailAnswer,SourcePerson,AnsweredBy,References")] Question question)
         {
             if (id != question.Id)
             {
@@ -101,6 +105,7 @@ namespace EmekAkademisi.Controllers
             {
                 try
                 {
+                    question.ModifiedDate = DateTime.Now;
                     _context.Update(question);
                     await _context.SaveChangesAsync();
                 }

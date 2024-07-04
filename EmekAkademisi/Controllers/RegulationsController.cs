@@ -64,7 +64,7 @@ namespace EmekAkademisi.Controllers
         // POST: Regulations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,UploadDate")] Regulation regulation, IFormFile file)
+        public async Task<IActionResult> Create([Bind("Id,Title")] Regulation regulation, IFormFile file)
         {
             if (ModelState.IsValid)
             {
@@ -80,6 +80,8 @@ namespace EmekAkademisi.Controllers
 
                     regulation.FilePath = "/uploads/" + fileName;
                 }
+
+                regulation.UploadDate = DateTime.Now;
 
                 _context.Add(regulation);
                 await _context.SaveChangesAsync();
@@ -107,7 +109,7 @@ namespace EmekAkademisi.Controllers
         // POST: Regulations/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,FilePath,UploadDate")] Regulation regulation, IFormFile file)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,FilePath")] Regulation regulation, IFormFile file)
         {
             if (id != regulation.Id)
             {
